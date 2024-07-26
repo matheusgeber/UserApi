@@ -22,7 +22,7 @@ import br.com.dsgr.service.UserService;
 
 @RestController
 @RequestMapping("/users")
-public class userController {
+public class UserController {
 
 	@Autowired
 	private UserService userService;
