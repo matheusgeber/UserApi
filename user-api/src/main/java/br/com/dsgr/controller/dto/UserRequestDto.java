@@ -1,6 +1,7 @@
 package br.com.dsgr.controller.dto;
 
 import java.util.Date;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -29,6 +30,8 @@ public class UserRequestDto {
 	private String cpfCnpj; 
 	
 	private String password;
+	
+	private Set<String> role;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date birthday;

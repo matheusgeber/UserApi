@@ -12,12 +12,13 @@ import br.com.dsgr.service.UserService;
 
 @RestController
 @RequestMapping
-public class AuthController {
+public class LoginController {
 	
 	private UserService userService;
 	
-	@PostMapping("/signin")
-	public ResponseEntity<User> loginUser(@RequestBody LoginRequestDto dto) {
+	@PostMapping("/login")
+	public ResponseEntity<User> authenticateUser(@RequestBody LoginRequestDto dto) {
+		
 		return null;
 	}
 

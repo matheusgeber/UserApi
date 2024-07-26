@@ -41,7 +41,8 @@ public class UserService {
 		
 	public UserResponseDto createUser(UserRequestDto dto) throws Exception {
 
-		if (dto.getUsername() == null || dto.getUsername().isBlank()) {
+		if (dto.getUsername() == null || dto.getUsername().isBlank() || dto.getUsername().length() < 4
+				|| dto.getUsername().length() > 14) {
 			throw new Exception();
 		}
 
@@ -77,7 +78,7 @@ public class UserService {
 		 
 
 		
-		if (dto.getCpfCnpj() == null || dto.getCpfCnpj().isBlank()) { 
+		if (dto.getCpfCnpj() == null || dto.getCpfCnpj().isBlank()){ 
 		 	throw new Exception(); }
 		
 		 
@@ -90,12 +91,16 @@ public class UserService {
 		user.setPassword(dto.getPassword());
 		user.setBirthday(dto.getBirthday());
 		user = userRepository.save(user);
-		UserResponseDto userResponse = new UserResponseDto();
+		
+		/*UserResponseDto userResponse = new UserResponseDto();
 		userResponse.setBirthday(user.getBirthday());
 		userResponse.setName(user.getFirstName() + " " +user.getLastName());
 		userResponse.setEmail(user.getEmail());
 		userResponse.setUsername(user.getUsername());
-		return userResponse;
+		return userResponse;*/
+		return UserResponseDto.builder().birthday(user.getBirthday()).name(user.getFirstName()).
+				email(user.getEmail()).build();
+		
 	}
 
 	public User updateUser(UserRequestDto dto, Long id) throws Exception {
