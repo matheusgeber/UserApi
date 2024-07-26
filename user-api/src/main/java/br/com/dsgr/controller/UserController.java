@@ -21,7 +21,7 @@ import br.com.dsgr.repository.UserRepository;
 import br.com.dsgr.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/accounts")
 public class UserController {
 
 	@Autowired
