@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dsgr.controller.dto.UserRequestDto;
+import br.com.dsgr.controller.dto.UserResponseDto;
 import br.com.dsgr.model.User;
 import br.com.dsgr.repository.UserRepository;
 import br.com.dsgr.service.UserService;
@@ -45,9 +46,9 @@ public class userController {
 	
 	//SignupRequest
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody UserRequestDto dto) {
+	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto dto) {
 		try {
-			User user = userService.createUser(dto);
+			UserResponseDto user = userService.createUser(dto);
 			return ResponseEntity.ok().body(user);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -68,7 +69,9 @@ public class userController {
 		}
 	}
 	
-	/*@DeleteMapping("/{id}")
-*/
+	@DeleteMapping("/{id}")
+	public void deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+	}
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.dsgr.controller.dto.UserRequestDto;
+import br.com.dsgr.controller.dto.UserResponseDto;
 import br.com.dsgr.model.User;
 import br.com.dsgr.repository.RoleRepository;
 import br.com.dsgr.repository.UserRepository;
@@ -36,12 +37,11 @@ public class UserService {
 	public Boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
 	}
-		
 	
-	public User createUser(UserRequestDto dto) throws Exception {
+		
+	public UserResponseDto createUser(UserRequestDto dto) throws Exception {
 
-		if (dto.getUsername() == null || dto.getUsername().isBlank() || dto.getUsername().length() < 4
-				|| dto.getUsername().length() > 14) {
+		if (dto.getUsername() == null || dto.getUsername().isBlank()) {
 			throw new Exception();
 		}
 
@@ -70,16 +70,17 @@ public class UserService {
 			throw new Exception();
 		}
 
-		/*
-		 * lembrete: validar a data if (dto.getBirthday() == null ||
-		 * dto.getEmail().isBlank()) { throw new Exception(); }
-		 */
+		
+		//lembrete: validar a data 
+		if (dto.getBirthday() == null || dto.getEmail().isBlank()) { 
+		throw new Exception(); }
+		 
 
-		/*
-		 * if (dto.getCpfCnpj() == null || dto.getCpfCnpj().isBlank()) { throw new
-		 * Exception(); }
-		 */
-
+		
+		if (dto.getCpfCnpj() == null || dto.getCpfCnpj().isBlank()) { 
+		 	throw new Exception(); }
+		
+		 
 		User user = new User();
 		user.setUsername(dto.getUsername());
 		user.setFirstName(dto.getFirstName());
@@ -88,8 +89,13 @@ public class UserService {
 		user.setCpfCnpj(dto.getCpfCnpj());
 		user.setPassword(dto.getPassword());
 		user.setBirthday(dto.getBirthday());
-		return userRepository.save(user);
-
+		user = userRepository.save(user);
+		UserResponseDto userResponse = new UserResponseDto();
+		userResponse.setBirthday(user.getBirthday());
+		userResponse.setName(user.getFirstName() + " " +user.getLastName());
+		userResponse.setEmail(user.getEmail());
+		userResponse.setUsername(user.getUsername());
+		return userResponse;
 	}
 
 	public User updateUser(UserRequestDto dto, Long id) throws Exception {
@@ -111,6 +117,8 @@ public class UserService {
 		throw new Exception();
 	}
 	
-	
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
+	}
 
 }
