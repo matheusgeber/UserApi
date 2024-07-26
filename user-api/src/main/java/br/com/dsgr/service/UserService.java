@@ -38,7 +38,6 @@ public class UserService {
 		return userRepository.existsByEmail(email);
 	}
 	
-		
 	public UserResponseDto createUser(UserRequestDto dto) throws Exception {
 
 		if (dto.getUsername() == null || dto.getUsername().isBlank() || dto.getUsername().length() < 4
