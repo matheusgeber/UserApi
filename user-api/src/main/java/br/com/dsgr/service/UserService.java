@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.dsgr.controller.dto.UserRequestDto;
@@ -80,14 +81,16 @@ public class UserService {
 		if (dto.getCpfCnpj() == null || dto.getCpfCnpj().isBlank()){ 
 		 	throw new Exception(); }
 		
-		 
+		
+		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.getPassword());
+		
 		User user = new User();
 		user.setUsername(dto.getUsername());
 		user.setFirstName(dto.getFirstName());
 		user.setLastName(dto.getLastName());
 		user.setEmail(dto.getEmail());
 		user.setCpfCnpj(dto.getCpfCnpj());
-		user.setPassword(dto.getPassword());
+		user.setPassword(encryptedPassword);
 		user.setBirthday(dto.getBirthday());
 		user = userRepository.save(user);
 		

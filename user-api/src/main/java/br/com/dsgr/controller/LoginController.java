@@ -1,5 +1,6 @@
-package br.com.dsgr.controller;
+	package br.com.dsgr.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,21 +11,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dsgr.controller.dto.LoginRequestDto;
 import br.com.dsgr.model.User;
-import br.com.dsgr.service.UserService;
+import br.com.dsgr.security.services.TokenService;
 
 @RestController
 @RequestMapping
 public class LoginController {
 	
+	@Autowired
+	TokenService tokenService;
+	
+	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	private UserService userService;
-	
 	@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody LoginRequestDto data) {
-		var usernamePassword= new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword());
+	public ResponseEntity<String> username(@RequestBody LoginRequestDto dto) {
+		var usernamePassword= new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
-		return ResponseEntity.ok().build();
+		
+		String token = tokenService.generateToken((User) auth.getPrincipal());
+		
+		return ResponseEntity.ok(token);
 	}
 
 }
