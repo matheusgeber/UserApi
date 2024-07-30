@@ -1,5 +1,6 @@
 package br.com.dsgr.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -64,27 +66,29 @@ public class User implements UserDetails {
 	
 	private Date registrationTime;
 	
-	private UserRole role;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles",
 				joinColumns = @JoinColumn(name = "user_id"),
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	private List<Role> roles = new ArrayList<Role>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ROLE_MANAGER) {
-            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_BASIC"));
-
-        } else if (this.role == UserRole.ROLE_ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_BASIC"));
-
-        } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
+	        	
+		for(Role role : roles) {
+				if (role.getName().name().equals(UserRole.ROLE_MANAGER.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"));
+		
+		        } else if (role.getName().name().equals(UserRole.ROLE_ADMIN.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		
+		        } else if(role.getName().name().equals(UserRole.ROLE_BASIC.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
+		        } 
+				    	
+		}	
+		return null;
 	}
-	
-}
 	
 }

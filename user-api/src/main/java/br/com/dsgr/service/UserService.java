@@ -1,7 +1,12 @@
 package br.com.dsgr.service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,11 +14,14 @@ import org.springframework.stereotype.Service;
 
 import br.com.dsgr.controller.dto.UserRequestDto;
 import br.com.dsgr.controller.dto.UserResponseDto;
+import br.com.dsgr.model.Role;
 import br.com.dsgr.model.User;
+import br.com.dsgr.model.UserRole;
 import br.com.dsgr.repository.RoleRepository;
 import br.com.dsgr.repository.UserRepository;
-import jakarta.persistence.TypedQuery;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UserService {
 	
@@ -92,6 +100,11 @@ public class UserService {
 		user.setCpfCnpj(dto.getCpfCnpj());
 		user.setPassword(encryptedPassword);
 		user.setBirthday(dto.getBirthday());
+		List<Role> roles = new ArrayList<Role>();
+		Role role = new Role();
+		role.setName(UserRole.ROLE_BASIC);
+		roles.add(role);
+		user.setRoles(roles);
 		user = userRepository.save(user);
 		
 		/*UserResponseDto userResponse = new UserResponseDto();
@@ -126,6 +139,40 @@ public class UserService {
 	
 	public void deleteUser(Long id) {
 		userRepository.deleteById(id);
+	}
+
+	public void updateRole(String role, Long id) {
+		Optional<User> userOpt = userRepository.findById(id);
+		User user = userOpt.isPresent() ? userOpt.get() : null;
+		/*Arrays.asList(UserRole.values()).forEach(value -> {
+			log.info(value.toString());
+			log.info(role);
+			log.info(Boolean.toString(value.toString().equals(role)));
+			log.info("============================================================");
+			if (value.toString().equals(role)) {
+				List<Role> list = new ArrayList<Role>();
+				Role roleU = new Role();
+				roleU.setName(value);
+				list.add(roleU);
+				user.setRoles(list);
+				userRepository.save(user);
+			}
+		});    */
+		
+		List<UserRole> mainList = Arrays.asList(UserRole.values());
+		for(int i = 0; i < mainList.size() ; i++) {
+			UserRole userRole = mainList.get(i);
+			if(role.equals(userRole.toString())) {
+				
+				List<Role> list = new ArrayList<Role>();
+				Role roleU = new Role();
+				roleU.setName(userRole);
+				list.add(roleU);
+				user.setRoles(list);
+				userRepository.save(user);
+			}
+		}
+			
 	}
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dsgr.controller.dto.UserRequestDto;
@@ -67,11 +68,19 @@ public class UserController {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
+			
+	}
+	
+	@PutMapping("/{id}/role")
+	public ResponseEntity updateRole(@RequestParam(name = "role") String role, @PathVariable(name = "id") Long id) {
+		userService.updateRole(role, id);
+		return null;
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 	}
+	
 	
 }
