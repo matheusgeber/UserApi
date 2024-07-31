@@ -1,12 +1,10 @@
 package br.com.dsgr.service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,8 +14,10 @@ import br.com.dsgr.controller.dto.UserRequestDto;
 import br.com.dsgr.controller.dto.UserResponseDto;
 import br.com.dsgr.model.Role;
 import br.com.dsgr.model.User;
+import br.com.dsgr.model.UserMessage;
 import br.com.dsgr.model.UserRole;
 import br.com.dsgr.repository.RoleRepository;
+import br.com.dsgr.repository.UserMessageRepository;
 import br.com.dsgr.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,9 @@ public class UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
-
+	
+	@Autowired UserMessageRepository userMessageRepository;
+	
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
@@ -174,5 +176,12 @@ public class UserService {
 		}
 			
 	}
-
+	
+	public void saveMessage(String message, String username) {
+		User userOpt = userRepository.getByUsername(username);
+        UserMessage userMessage = new UserMessage(userOpt, message, new Date());
+        userMessage.setUserId(userOpt);
+        userMessageRepository.save(userMessage);
+	
+    }
 }
