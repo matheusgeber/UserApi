@@ -85,9 +85,9 @@ public class User implements UserDetails {
 		        } else if(role.getName().name().equals(UserRole.ROLE_BASIC.name())) {
 		            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
 		        } 
-				    	
 		}	
-		return null;
+		
+		return List.of(new SimpleGrantedAuthority(""));
 	}
 	
 }

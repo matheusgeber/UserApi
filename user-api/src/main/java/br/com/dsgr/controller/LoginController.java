@@ -1,9 +1,9 @@
 package br.com.dsgr.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,20 +17,23 @@ import br.com.dsgr.security.services.TokenService;
 @RequestMapping
 public class LoginController {
 	
-	@Autowired
-	TokenService tokenService;
+	private TokenService tokenService;
 	
-	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	public LoginController(TokenService tokenService, AuthenticationManager authenticationManager) {
+		super();
+		this.tokenService = tokenService;
+		this.authenticationManager = authenticationManager;
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<String> username(@RequestBody LoginRequestDto dto) {
-		var usernamePassword= new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
-		var auth = this.authenticationManager.authenticate(usernamePassword);
+		UsernamePasswordAuthenticationToken usernamePassword= new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+		Authentication auth = this.authenticationManager.authenticate(usernamePassword);
 		
 		String token = tokenService.generateToken((User) auth.getPrincipal());
 		
 		return ResponseEntity.ok(token);
 	}
-
 }

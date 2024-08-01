@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +52,8 @@ public class UserController {
 	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto dto) {
 		try {
 			UserResponseDto user = userService.createUser(dto);
-			return ResponseEntity.ok().body(user);
+			return ResponseEntity.status(HttpStatus.CREATED).body(user);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
@@ -64,7 +65,6 @@ public class UserController {
 			User user = userService.updateUser(dto, id);
 			return ResponseEntity.ok().body(user);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
@@ -72,14 +72,20 @@ public class UserController {
 	}
 
 	@PutMapping("/role/{id}")
-	public ResponseEntity updateRole(@RequestParam(name = "role") String role, @PathVariable(name = "id") Long id) {
+	public ResponseEntity<?> updateRole(@RequestParam(name = "role") String role, @PathVariable(name = "id") Long id) {
 		userService.updateRole(role, id);
-		return null;
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public void deleteUser(@PathVariable Long id) {
-		userService.deleteUser(id);
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+		try {
+			userService.deleteUser(id);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }
