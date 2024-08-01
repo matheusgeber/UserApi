@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,8 +34,9 @@ public class UserService {
 	
 	@Autowired UserMessageRepository userMessageRepository;
 	
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+	public List<User> getAllUsers(UserResponseDto userResponse) {
+		List<User> list = userRepository.findAllUsers();
+		return list;
 	}
 
 	public Optional<User> getUserById(Long id) {
