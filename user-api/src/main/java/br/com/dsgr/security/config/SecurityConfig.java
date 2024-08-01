@@ -28,6 +28,7 @@ public class SecurityConfig {
 		return httpSecurity.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/teste").permitAll()
+						.requestMatchers("/hello", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/teste/basic").hasAuthority("ROLE_BASIC")
 						.requestMatchers(HttpMethod.POST, "/teste/admin").hasAuthority("ROLE_ADMIN")
 						.requestMatchers(HttpMethod.POST, "/teste/manager").hasAuthority("ROLE_MANAGER")

@@ -20,9 +20,11 @@ import br.com.dsgr.controller.dto.UserResponseDto;
 import br.com.dsgr.model.User;
 import br.com.dsgr.repository.UserRepository;
 import br.com.dsgr.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/accounts")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
 	@Autowired
