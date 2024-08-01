@@ -27,25 +27,23 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
-	
-	//listar todos usuarios
+	// listar todos usuarios
 	@GetMapping
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
-	
-	//listar usuario por id
-    @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id);
-    }
-	
-	
-	//SignupRequest
+
+	// listar usuario por id
+	@GetMapping("/{id}")
+	public Optional<User> getUserById(@PathVariable Long id) {
+		return userRepository.findById(id);
+	}
+
+	// SignupRequest
 	@PostMapping
 	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto dto) {
 		try {
@@ -57,8 +55,8 @@ public class UserController {
 			return ResponseEntity.badRequest().build();
 		}
 	}
-	
-	@PutMapping("/{id}")
+
+	@PutMapping("/update/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody UserRequestDto dto, @PathVariable(name = "id") Long id) {
 		try {
 			User user = userService.updateUser(dto, id);
@@ -68,19 +66,18 @@ public class UserController {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();
 		}
-			
+
 	}
-	
-	@PutMapping("/{id}/role")
+
+	@PutMapping("/role/{id}")
 	public ResponseEntity updateRole(@RequestParam(name = "role") String role, @PathVariable(name = "id") Long id) {
 		userService.updateRole(role, id);
 		return null;
 	}
-	
-	@DeleteMapping("/{id}")
+
+	@DeleteMapping("/delete/{id}")
 	public void deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 	}
-	
-	
+
 }

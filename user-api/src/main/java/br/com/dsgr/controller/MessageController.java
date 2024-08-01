@@ -14,25 +14,53 @@ import br.com.dsgr.service.UserService;
 @RestController
 @RequestMapping("/teste")
 public class MessageController {
-	
+
 	@Autowired
 	TokenService tokenService;
-	
+
 	@Autowired
 	UserService userService;
 
 	@PostMapping("/basic")
-    public ResponseEntity<String> postMessage(@RequestBody String message, @RequestHeader(name = "Authorization") String token ) {
-        try {
-        	String username = tokenService.extractUsername(token);
-        	System.out.println("OK" +username);
-         	userService.saveMessage(message, username);
-			
-            return ResponseEntity.ok("Passou");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+	public ResponseEntity<String> basicTest(@RequestBody String message,
+			@RequestHeader(name = "Authorization") String token) {
+		try {
+			String username = tokenService.extractUsername(token);
+			System.out.println("user: " + username);
+			userService.saveMessage(message, username);
+
+			return ResponseEntity.ok("Teste basico aprovado!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
-	
-	
+
+	@PostMapping("/admin")
+	public ResponseEntity<String> adminTest(@RequestBody String message,
+			@RequestHeader(name = "Authorization") String token) {
+		try {
+			String username = tokenService.extractUsername(token);
+			System.out.println("user: " + username);
+			userService.saveMessage(message, username);
+
+			return ResponseEntity.ok("Teste de admin aprovado!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PostMapping("/manager")
+	public ResponseEntity<String> managerTest(@RequestBody String message,
+			@RequestHeader(name = "Authorization") String token) {
+		try {
+			String username = tokenService.extractUsername(token);
+			System.out.println("user: " + username);
+			userService.saveMessage(message, username);
+
+			return ResponseEntity.ok("Teste de manager aprovado!");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }
