@@ -2,6 +2,7 @@ package br.com.dsgr.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
 @Builder
 @AllArgsConstructor
 @Entity
@@ -24,7 +24,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private UserRole name;
 	
@@ -35,6 +35,5 @@ public class Role {
 	public Role(UserRole name) {
 		this.name = name;
 	}
-	
 	
 }

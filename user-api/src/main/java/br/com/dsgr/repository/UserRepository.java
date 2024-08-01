@@ -1,6 +1,6 @@
 package br.com.dsgr.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,15 +11,17 @@ import org.springframework.stereotype.Repository;
 import br.com.dsgr.model.User;
 
 @Repository
-public interface UserRepository	extends JpaRepository<User, Long> {
-	
+public interface UserRepository extends JpaRepository<User, Long> {
+
 	UserDetails findByUsername(String username);
-	
-	
-	@Query("SELECT u FROM User u WHERE u.username = :param")
-	Optional<User> getUserByUsername(@Param("param")  String username);
-	
+
+	@Query("select u from User u")
+	List<User> findAllUsers();
+
+	@Query(value = "select u from User u where u.username = :username")
+	User getByUsername(@Param("username") String username);
+
 	Boolean existsByUsername(String username);
-	
+
 	Boolean existsByEmail(String email);
 }

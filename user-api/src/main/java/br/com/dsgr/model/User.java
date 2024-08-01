@@ -1,10 +1,9 @@
 package br.com.dsgr.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,9 +20,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -63,28 +62,32 @@ public class User implements UserDetails {
 	private Date birthday;
 	
 	private Date registrationTime;
+		
+	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<UserMessage> messages;
 	
-	private UserRole role;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles",
 				joinColumns = @JoinColumn(name = "user_id"),
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	private List<Role> roles = new ArrayList<Role>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ROLE_MANAGER) {
-            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_BASIC"));
-
-        } else if (this.role == UserRole.ROLE_ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_BASIC"));
-
-        } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
+	        	
+		for(Role role : roles) {
+				if (role.getName().name().equals(UserRole.ROLE_MANAGER.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"));
+		
+		        } else if (role.getName().name().equals(UserRole.ROLE_ADMIN.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		
+		        } else if(role.getName().name().equals(UserRole.ROLE_BASIC.name())) {
+		            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
+		        } 
+		}	
+		
+		return List.of(new SimpleGrantedAuthority(""));
 	}
-	
-}
 	
 }
