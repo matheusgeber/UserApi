@@ -3,6 +3,12 @@ package br.com.dsgr.controller.dto;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +36,11 @@ public class UserRequestDto {
 	
 	private Set<String> role;
 	
-	/* TODO AVALIAR FORMATO DATE RETORNADO
-	 * TENTAR PADRONIZAR DD/MM/YYYY
-	 * @JsonFormat(pattern = "dd/MM/yyyy") */
+	@Past
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date birthday;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date registrationTime;
 }

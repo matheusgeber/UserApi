@@ -2,6 +2,9 @@ package br.com.dsgr.controller.dto;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +32,8 @@ public class UserResponseDto {
 	
 	private String idade;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
 	private Date registrationTime;
 	
 }

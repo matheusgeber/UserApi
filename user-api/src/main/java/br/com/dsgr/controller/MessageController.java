@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dsgr.security.services.TokenService;
 import br.com.dsgr.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "ROLE TEST")
 @RequestMapping("/teste")
+@SecurityRequirement(name = "bearerAuth")
 public class MessageController {
 
 	@Autowired
@@ -22,6 +27,7 @@ public class MessageController {
 	UserService userService;
 
 	@PostMapping("/basic")
+	@Operation(summary = "Basic test")
 	public ResponseEntity<String> basicTest(@RequestBody String message,
 			@RequestHeader(name = "Authorization") String token) {
 		try {
@@ -36,6 +42,7 @@ public class MessageController {
 	}
 
 	@PostMapping("/admin")
+	@Operation(summary = "Admin test")
 	public ResponseEntity<String> adminTest(@RequestBody String message,
 			@RequestHeader(name = "Authorization") String token) {
 		try {
@@ -50,6 +57,7 @@ public class MessageController {
 	}
 
 	@PostMapping("/manager")
+	@Operation(summary = "Manager test")
 	public ResponseEntity<String> managerTest(@RequestBody String message,
 			@RequestHeader(name = "Authorization") String token) {
 		try {

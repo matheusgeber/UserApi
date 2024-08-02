@@ -21,8 +21,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,11 +59,15 @@ public class User implements UserDetails {
 	private String cpfCnpj; 
 	
 	private String password;
-	
-	@JsonFormat(pattern = "dd/MM/yyyy")
+		
 	private Date birthday;
 	
 	private Date registrationTime;
+	
+	@PrePersist
+	private void onCreate() {
+		registrationTime = new Date();
+	}
 		
 	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<UserMessage> messages;

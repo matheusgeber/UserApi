@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.dsgr.controller.dto.LoginRequestDto;
 import br.com.dsgr.model.User;
 import br.com.dsgr.security.services.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping
+@RequestMapping("/accounts")
+@Tag(name = "POST")
 public class LoginController {
 	
 	private TokenService tokenService;
@@ -28,6 +33,9 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
+	@Operation(summary = "Enter your account")
+	@ApiResponses(value = {
+	@ApiResponse(responseCode = "200", description = "Login completed")})
 	public ResponseEntity<String> username(@RequestBody LoginRequestDto dto) {
 		UsernamePasswordAuthenticationToken usernamePassword= new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
 		Authentication auth = this.authenticationManager.authenticate(usernamePassword);
