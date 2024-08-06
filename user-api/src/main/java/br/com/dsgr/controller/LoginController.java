@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/accounts")
-@Tag(name = "POST")
+@Tag(name = "LOGIN")
 public class LoginController {
 	
 	private TokenService tokenService;

@@ -69,16 +69,12 @@ public class UserService {
 		user.setRoles(roles);
 		user = saveUser(user);
 
-		/*
-		 * TODO DELOBOMK ON FUTURE
-		 * UserResponseDto userResponse = new UserResponseDto();
-		 * userResponse.setBirthday(user.getBirthday());
-		 * userResponse.setName(user.getFirstName() + " " +user.getLastName());
-		 * userResponse.setEmail(user.getEmail());
-		 * userResponse.setUsername(user.getUsername()); return userResponse;
-		 */
-		return UserResponseDto.builder().birthday(user.getBirthday()).name(user.getFirstName()).email(user.getEmail())
-				.build();
+		UserResponseDto userResponse = new UserResponseDto();
+		userResponse.setBirthday(user.getBirthday());
+		userResponse.setName(user.getFirstName() + " " + user.getLastName());
+		userResponse.setEmail(user.getEmail());
+		userResponse.setUsername(user.getUsername());
+		return userResponse;
 
 	}
 	
@@ -154,27 +150,8 @@ public class UserService {
 	public void updateRole(String role, Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
 		User user = userOpt.isPresent() ? userOpt.get() : null;
-		/*
-		 * TODO ESCOLHER QUAL FOR UTILIZAR
-		 * Arrays.asList(UserRole.values()).forEach(value -> {
-		 * log.info(value.toString()); log.info(role);
-		 * log.info(Boolean.toString(value.toString().equals(role)));
-		 * log.info("============================================================"); if
-		 * (value.toString().equals(role)) { List<Role> list = new ArrayList<Role>();
-		 * Role roleU = new Role(); roleU.setName(value); list.add(roleU);
-		 * user.setRoles(list); userRepository.save(user); } });
-		 */
 
 		List<UserRole> mainList = Arrays.asList(UserRole.values());
-		
-		/*
-		 * for (int i = 0; i < mainList.size(); i++) { UserRole userRole =
-		 * mainList.get(i); if (role.equals(userRole.toString())) {
-		 * 
-		 * List<Role> list = new ArrayList<Role>(); Role roleU = new Role();
-		 * roleU.setName(userRole); list.add(roleU); user.setRoles(list);
-		 * saveUser(user); } }
-		 */
 		
 		for(UserRole userRole : mainList) {
 			if (role.equals(userRole.toString())) {

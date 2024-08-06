@@ -8,14 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
-@Builder
-@AllArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -32,8 +25,63 @@ public class Role {
 		
 	}
 	
-	public Role(UserRole name) {
+	public Role(Integer id, UserRole name) {
+		super();
+		this.id = id;
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", name=" + name + "]";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public UserRole getName() {
+		return name;
+	}
+
+	public void setName(UserRole name) {
+		this.name = name;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Role other = (Role) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name != other.name)
+			return false;
+		return true;
+	}
+	
+	
+	
+	
 	
 }

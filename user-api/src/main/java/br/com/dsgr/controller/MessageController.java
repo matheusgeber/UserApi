@@ -29,7 +29,7 @@ public class MessageController {
 	@PostMapping("/basic")
 	@Operation(summary = "Basic test")
 	public ResponseEntity<String> basicTest(@RequestBody String message,
-			@RequestHeader(name = "Authorization") String token) {
+			String token) {
 		try {
 			String username = tokenService.extractUsername(token);
 			System.out.println("user: " + username);
