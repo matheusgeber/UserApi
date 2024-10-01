@@ -16,7 +16,7 @@ import br.com.dsgr.controller.dto.UserResponseDto;
 import br.com.dsgr.model.Role;
 import br.com.dsgr.model.User;
 import br.com.dsgr.model.UserMessage;
-import br.com.dsgr.model.UserRole;
+import br.com.dsgr.model.EnumRole;
 import br.com.dsgr.repository.UserMessageRepository;
 import br.com.dsgr.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class UserService {
 		user.setBirthday(dto.getBirthday());
 		List<Role> roles = new ArrayList<Role>();
 		Role role = new Role();
-		role.setName(UserRole.ROLE_BASIC);
+		role.setName(EnumRole.ROLE_BASIC);
 		roles.add(role);
 		user.setRoles(roles);
 		user = saveUser(user);
@@ -151,9 +151,9 @@ public class UserService {
 		Optional<User> userOpt = userRepository.findById(id);
 		User user = userOpt.isPresent() ? userOpt.get() : null;
 
-		List<UserRole> mainList = Arrays.asList(UserRole.values());
+		List<EnumRole> mainList = Arrays.asList(EnumRole.values());
 		
-		for(UserRole userRole : mainList) {
+		for(EnumRole userRole : mainList) {
 			if (role.equals(userRole.toString())) {
 				List<Role> list = new ArrayList<Role>();
 				Role roleU = new Role();

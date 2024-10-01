@@ -36,7 +36,9 @@ public class UserMessage {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
-
+	
+	public UserMessage() {}
+	
 	public UserMessage(User userId, String message, Date timestamp) {
 		super();
 		this.userId = userId;

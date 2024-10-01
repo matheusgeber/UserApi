@@ -71,13 +71,13 @@ public class User implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 	        	
 		for(Role role : roles) {
-				if (role.getName().name().equals(UserRole.ROLE_MANAGER.name())) {
+				if (role.getName().name().equals(EnumRole.ROLE_MANAGER.name())) {
 		            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"));
 		
-		        } else if (role.getName().name().equals(UserRole.ROLE_ADMIN.name())) {
+		        } else if (role.getName().name().equals(EnumRole.ROLE_ADMIN.name())) {
 		            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		
-		        } else if(role.getName().name().equals(UserRole.ROLE_BASIC.name())) {
+		        } else if(role.getName().name().equals(EnumRole.ROLE_BASIC.name())) {
 		            return List.of(new SimpleGrantedAuthority("ROLE_BASIC"));
 		        } 
 		}	

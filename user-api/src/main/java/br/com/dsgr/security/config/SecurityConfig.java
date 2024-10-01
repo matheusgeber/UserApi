@@ -35,7 +35,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/teste/manager").hasAuthority("ROLE_MANAGER")
 						.requestMatchers(HttpMethod.POST, "/accounts/signup").permitAll()
 						.requestMatchers(HttpMethod.GET, "/accounts").permitAll()
-						.requestMatchers(HttpMethod.GET, "/accounts/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/accounts/{id}").hasAuthority("ROLE_BASIC")
 						.requestMatchers(HttpMethod.PUT, "/accounts/update/{id}").hasAuthority("ROLE_ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/accounts/role/{id}").hasAuthority("ROLE_ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/accounts/{id}").hasAuthority("ROLE_MANAGER").anyRequest()

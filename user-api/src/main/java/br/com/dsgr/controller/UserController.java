@@ -40,7 +40,6 @@ public class UserController {
 
 	// listar todos usuarios
 	@GetMapping
-	@Tag(name="USER CONTROLLER")
 	@Operation(summary = "List all users")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "200", description = "Successful Operation")})
@@ -50,7 +49,6 @@ public class UserController {
 
 	// listar usuario por id
 	@GetMapping("/{id}")
-	@Tag(name = "USER CONTROLLER")
 	@Operation(summary = "Find specified user by ID")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "200", description = "Successful Operation")})
@@ -60,7 +58,6 @@ public class UserController {
 
 	// SignupRequest
 	@PostMapping("/signup")
-	@Tag(name="USER CONTROLLER")
 	@Operation(summary = "Create a new user")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "201", description = "User created sucessfully")})
@@ -75,7 +72,6 @@ public class UserController {
 	}
 	
 	@PutMapping("/update/{id}")
-	@Tag(name="USER CONTROLLER")
 	@Operation(summary = "Update user")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "200", description = "User updated")})
@@ -91,7 +87,6 @@ public class UserController {
 	}
 
 	@PutMapping("/role/{id}")
-	@Tag(name="USER CONTROLLER")
 	@Operation(summary = "Update role")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "200", description = "Role updated")})
@@ -101,7 +96,6 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	@Tag(name="USER CONTROLLER")
 	@Operation(summary = "Delete user")
 	@ApiResponses(value = {
 	@ApiResponse(responseCode = "202", description = "User deleted")})

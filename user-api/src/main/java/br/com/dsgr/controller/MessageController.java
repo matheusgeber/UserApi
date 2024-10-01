@@ -2,6 +2,7 @@ package br.com.dsgr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,7 +16,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Tag(name = "ROLE TEST")
 @RequestMapping("/teste")
 @SecurityRequirement(name = "bearerAuth")
 public class MessageController {
@@ -29,9 +29,9 @@ public class MessageController {
 	@PostMapping("/basic")
 	@Operation(summary = "Basic test")
 	public ResponseEntity<String> basicTest(@RequestBody String message,
-			String token) {
+			Authentication authentication) {
 		try {
-			String username = tokenService.extractUsername(token);
+			String username = authentication.getName();
 			System.out.println("user: " + username);
 			userService.saveMessage(message, username);
 
@@ -44,9 +44,9 @@ public class MessageController {
 	@PostMapping("/admin")
 	@Operation(summary = "Admin test")
 	public ResponseEntity<String> adminTest(@RequestBody String message,
-			@RequestHeader(name = "Authorization") String token) {
+			Authentication authentication) {
 		try {
-			String username = tokenService.extractUsername(token);
+			String username = authentication.getName();
 			System.out.println("user: " + username);
 			userService.saveMessage(message, username);
 
@@ -59,9 +59,9 @@ public class MessageController {
 	@PostMapping("/manager")
 	@Operation(summary = "Manager test")
 	public ResponseEntity<String> managerTest(@RequestBody String message,
-			@RequestHeader(name = "Authorization") String token) {
+			Authentication authentication) {
 		try {
-			String username = tokenService.extractUsername(token);
+			String username = authentication.getName();
 			System.out.println("user: " + username);
 			userService.saveMessage(message, username);
 

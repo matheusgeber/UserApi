@@ -19,4 +19,4 @@ public class AuthorizationService implements UserDetailsService {
 		return userRepository.findByUsername(username);
 	}
 
-}	
+}

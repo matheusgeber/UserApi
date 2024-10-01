@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.dsgr.model.Role;
-import br.com.dsgr.model.UserRole;
+import br.com.dsgr.model.EnumRole;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
-	Optional<Role> findByName(UserRole name);
+public interface RoleRepository extends JpaRepository<Role, Integer> {
+	Optional<Role> findByName(EnumRole name);
 }
